@@ -1,0 +1,60 @@
+﻿@using Estone.Core.OA
+@using Estone.OA.Web.Models
+@model RoleEditModel
+@{ ViewBag.Title = "Edit Role"; Layout = "~/Views/Shared/_StartLayout.cshtml";}
+@Html.ValidationSummary()
+@using (Html.BeginForm())
+{
+    <input type="hidden" name="roleName" value="@Model.Role.Name" />
+    <div class="panel panel-primary">
+        <div class="panel-heading">Add To @Model.Role.Name</div>
+        <table class="table table-striped">
+            @if (Model.NonMembers.Count() == 0)
+            {
+                <tr><td colspan="2">All Users Are Members</td></tr>
+            }
+            else
+            {
+            <tr><td colspan="2">可以将以下用户从加入该角色中</td></tr>
+                <tr><td>User ID</td><td>Add To Role</td></tr>
+                foreach (CorpUser user in Model.NonMembers)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>
+                            <input type="checkbox" name="IdsToAdd" value="@user.Id">
+                        </td>
+                    </tr>
+                }
+
+            }
+          
+        </table>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Remove To @Model.Role.Name</div>
+        <table class="table table-striped">
+          
+            @if (Model.Members.Count() == 0)
+            {
+                <tr><td colspan="2">All Users Are NonMembers</td></tr>
+            }
+            else
+            {
+                <tr><td colspan="2">可以将以下用户从该角色中删除</td></tr>
+                <tr><td>User ID</td><td>Remove To Role</td></tr>
+                foreach (CorpUser user in Model.Members)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>
+                            <input type="checkbox" name="IdsToDelete" value="@user.Id">
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    @Html.ActionLink("取消", "Index", null, new { @class = "btn btn-default" })
+}

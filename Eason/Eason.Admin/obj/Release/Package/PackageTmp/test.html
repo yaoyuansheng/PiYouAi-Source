@@ -1,0 +1,192 @@
+﻿<html>
+<head>
+    <title>apiceshi</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>基本地图展示</title>
+    <style type="text/css">
+        body, html, #container {
+            height: 100%;
+            margin: 0px;
+        }
+    </style>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="http://webapi.amap.com/maps?v=1.3&key=b37dc8fa0870b9f7c0c4e2327bfb2585"></script>
+    <script src="//webapi.amap.com/ui/1.0/main.js"></script>
+    <script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        .fontsize p {
+            font-size: 12px;
+        }
+
+        .fontsize table {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="head">
+        <img title="互动吧" alt="互动吧" src="http://img1.hudongba.com/static_v4/images/other/hdb_logo_color_1.png">
+    </div>
+    <div class="row">
+        <div class="col-md-3 " style="height:600px;">
+            <div class="input-group" style="margin-bottom:10px;">
+                <input type="text" id="searchText" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <button id="search" class="btn btn-default" type="button">搜索</button>
+                </span>
+            </div>
+            <ul id="my-list" class="list-group fontsize"></ul>
+        </div>
+        <div class="col-md-9">
+            <div id="container"></div>
+        </div>
+
+    </div>
+    <script>
+
+        var map = new AMap.Map('container', {
+            center: [121.499809, 31.239666],
+            zoom: 12
+        });
+        map.plugin(["AMap.ToolBar"], function () {
+            map.addControl(new AMap.ToolBar());
+        });
+        //构建一个数据项数组，数据项本身没有格式要求，但需要支持getDataId和getPosition
+        var data  = [];
+        var $search = $('#search');
+        $search.click(function () {
+            $('#my-list').empty();
+            var $searchText = $('#searchText').val();
+            FindData($searchText);
+        });
+       
+        function InitData(){
+            AMapUI.loadUI(['misc/MarkerList'], function (MarkerList) {
+
+                var markerList = new MarkerList({
+                    //关联的map对象
+                    map: map,
+
+                    //列表的dom容器的id
+                    listContainer: 'my-list',
+
+                    //选中状态（通过点击列表或者marker）时在Marker和列表节点上添加的class，可以借此编写css控制选中时的展示效果
+                    selectedClassNames: 'selected',
+
+                    //返回数据项的Id
+                    getDataId: function (dataItem, index) {
+                        //index表示该数据项在数组中的索引位置，从0开始，如果确实没有id，可以返回index代替
+                        return dataItem.id;
+                    },
+                    //返回数据项的位置信息，需要是AMap.LngLat实例，比如是经纬度数组，比如[116.789806, 39.904989]
+                    getPosition: function (dataItem) {
+                        return dataItem.position;
+                    },
+                    //返回数据项对应的Marker
+                    getMarker: function (dataItem, context, recycledMarker) {
+
+                        //marker的标注内容
+                        var content = dataItem.markerLabel;
+
+                        var label = {
+                            offset: new AMap.Pixel(16, 18), //修改label相对于marker的位置
+                            content: content
+                        };
+
+                        //存在可回收利用的marker
+                        if (recycledMarker) {
+                            //直接更新内容返回
+                            recycledMarker.setLabel(label);
+                            return recycledMarker;
+                        }
+
+                        //返回一个新的Marker
+                        return new AMap.Marker({
+                            label: label
+                        });
+                    },
+                    //返回数据项对应的infoWindow
+                    getInfoWindow: function (dataItem, context, recycledInfoWindow) {
+
+                        var tpl = ' <div class="panel panel-default" > <div class="panel-heading"><h6 class="panel-title"> <%- dataItem.title %></h6>' +
+                        ' </div>  <div class="panel-body"><table class="table"><tr > <td ><img src="<%- dataItem.image %>" width="100%" />' +
+                         ' </td></tr><tr><td><p><%- dataItem.telphone %></p></td></tr><tr ><td ><p><%- dataItem.address %></p></td></tr></table></div></div>';
+                        //MarkerList.utils.template支持underscore语法的模板
+                        var content = MarkerList.utils.template(tpl, {
+                            dataItem: dataItem,
+                            dataIndex: context.index
+                        });
+
+                        if (recycledInfoWindow) {
+                            //存在可回收利用的infoWindow, 直接更新内容返回
+                            recycledInfoWindow.setContent(content);
+                            return recycledInfoWindow;
+                        }
+
+                        //返回一个新的InfoWindow
+                        return new AMap.InfoWindow({
+                            offset: new AMap.Pixel(0, -23),
+                            content: content
+                        });
+                    },
+                    //返回数据项对应的列表节点
+                    getListElement: function (dataItem, context, recycledListElement) {
+
+                        var tpl = ' <div class="panel panel-default" style="height:250px;" > <div class="panel-heading"><h6 class="panel-title"> <%- dataItem.title %></h6>' +
+                        ' </div>  <div class="panel-body"><table class="table"><tr > <td height="100px;"  ><img src="<%- dataItem.image %>" width="100%" height="100px;" />' +
+                         ' </td></tr><tr><td height="20px;" ><p><%- dataItem.telphone %></p></td></tr><tr ><td  ><p><%- dataItem.address %></p></td></tr></table></div></div>';
+
+                        var content = MarkerList.utils.template(tpl, {
+                            dataItem: dataItem,
+                            dataIndex: context.index
+                        });
+
+                        if (recycledListElement) {
+                            //存在可回收利用的listElement, 直接更新内容返回
+                            recycledListElement.innerHTML = content;
+                            return recycledListElement;
+                        }
+
+                        //返回一段html，MarkerList将利用此html构建一个新的dom节点
+                        return '<li>' + content + '</li>';
+                    }
+                });
+
+                //监听选中改变
+                markerList.on('selectedChanged', function (event, info) {
+                    //console.log(event, info);
+                });
+
+                //监听Marker和ListElement上的点击
+                markerList.on('markerClick listElementClick', function (event, record) {
+                    //console.log(event, record);
+                });
+
+
+
+                //展示该数据
+                markerList.render(data);
+            });
+        }
+       
+        function FindData($searchText)
+        {
+            $.getJSON("/Testlt/index",
+                    {
+                        search: $searchText,
+                    },
+                    function (dt, status) {
+                        data = dt;
+                        InitData();
+                    });
+        }
+        FindData("");
+    </script>
+</body>
+
+
+</html>

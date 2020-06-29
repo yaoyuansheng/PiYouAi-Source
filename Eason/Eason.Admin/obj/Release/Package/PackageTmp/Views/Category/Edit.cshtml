@@ -1,0 +1,57 @@
+﻿@model  Eason.EntityFramework.Entities.News.ArticleCategory
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <script src="~/DataJs/Category.js"></script>
+    <style>
+        .folder-line {
+            display: inline-block;
+            margin-right: 2px;
+            width: 20px;
+            height: 20px;
+            background: url(../../Content/skin_icons.png) -200px -250px no-repeat;
+            vertical-align: middle;
+            text-indent: -999em;
+            *text-indent: 0;
+        }
+
+        .folder-open {
+            display: inline-block;
+            margin-right: 2px;
+            width: 20px;
+            height: 20px;
+            background: url(../../Content/skin_icons.png) -160px -250px no-repeat;
+            vertical-align: middle;
+            text-indent: -999em;
+            *text-indent: 0;
+        }
+    </style>
+</head>
+<body>
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(x => x.id)
+        <div class="form-group">
+            <label>分类名称</label>
+            @Html.TextBoxFor(x => x.title, new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">保存</button>
+        @Html.ActionLink("取消", "Index", null, new { @class = "btn btn-default" })
+    }
+</body>
+</html>

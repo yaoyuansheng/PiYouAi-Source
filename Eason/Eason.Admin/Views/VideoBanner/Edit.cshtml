@@ -1,0 +1,110 @@
+﻿@model Eason.EntityFramework.Entities.Banner.VideoBanner
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/utf8-net/ueditor.config.js"></script>
+
+    <script src="~/utf8-net/ueditor.all.min.js"></script>
+
+    <script src="~/utf8-net/lang/zh-cn/zh-cn.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">编辑banner</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal" method="post">
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">标题</label>
+                        <div>
+                            <input type="text" class="form-control" id="title" name="title" value="@Model.title">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">外链<span style="padding-left:12px;font-size:12px;font-weight: normal;opacity:.6;">示例："http://www.piyouai.com/web1/content.html?id=49"</span></label>
+                        <div>
+                            <input type="text" class="form-control" id="burl" name="burl" value="@Model.burl">
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;" >
+                        <label for="txt-title">缩略图<span style="padding-left:12px;font-size:12px;font-weight: normal;opacity:.6;">尺寸：640*270</span></label>
+                        <div class="form-inline " style="margin-left:5px;">
+                            <input type="file" id="file1" style="float:left;" />
+                            <input type="button" class="btn btn-default" style="float:left;" id="btn-upload" value="上传" />
+                        </div>
+                        <div>
+                            <input id="bpic" class="form-control" type="text" name="bpic" value="@Model.bpic" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:200px;">
+
+                        <div class="form-inline">
+                            <input type="submit" class="btn btn-default" id="btn-publish" value="发 布">
+
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:50px;margin-left:20px; width:200px;">
+                        <input type="hidden" id="id" name="id"value="@Model.id" />
+
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+
+        $("#btn-upload").click(function () {
+
+            var formData = new FormData();
+            formData.append("upfile", document.getElementById("file1").files[0]);
+            $.ajax({
+                url: "http://www.piyouai.com:8081/baidueditor.ashx?action=uploadimage",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var jsonData = JSON.parse(data);
+                    if (jsonData.state == "SUCCESS") {
+                        $("#bpic").val("http://www.piyouai.com:8081/new/" + jsonData.url);
+                    }
+                    else {
+                        alert("上传失败！");
+                    }
+
+                },
+                error: function () {
+                    alert("上传失败！");
+
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

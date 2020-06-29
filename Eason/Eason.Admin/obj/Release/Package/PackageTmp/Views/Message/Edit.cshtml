@@ -1,0 +1,69 @@
+﻿@model Eason.EntityFramework.Entities.Message.TotalMessage
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/utf8-net/ueditor.config.js"></script>
+
+    <script src="~/utf8-net/ueditor.all.min.js"></script>
+
+    <script src="~/utf8-net/lang/zh-cn/zh-cn.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">编辑banner</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal" method="post">
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">充值数量</label>
+                        <div>
+                            <input type="text" class="form-control" id="count" name="count" value="@Model.count">
+                        </div>
+                    </div>
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">充值备注</label>
+                        <div>
+                            <input type="text" class="form-control" id="remark" name="remark" value="@Model.remark">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:200px;">
+
+                        <div class="form-inline">
+                            <input type="submit" class="btn btn-default" id="btn-publish" value="发 布">
+
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:50px;margin-left:20px; width:200px;">
+                        <input type="hidden" id="id" name="id"value="@Model.id" />
+
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+</body>
+</html>

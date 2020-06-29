@@ -1,0 +1,36 @@
+﻿@model  Eason.Core.Users.UserDto
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+    @Html.ValidationSummary(false)
+    @using (Html.BeginForm())
+    {
+        <div class="form-group">
+            <label>用户名<span style="padding-left:12px;font-size:12px;font-weight: normal;opacity:.6; color:red;">注:此账户是后台管理员登陆账号兼文章发布作者名，示例：匹优爱</span></label>
+            @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
+        </div>
+        <div class="form-group" style="display:none;">
+            <label>手机号</label>
+            @Html.TextBoxFor(x => x.telephone, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            @Html.PasswordFor(x => x.password, new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">创建</button>
+        @Html.ActionLink("取消", "Index", null, new { @class = "btn btn-default" })
+    }
+
+    </body>
+</html>

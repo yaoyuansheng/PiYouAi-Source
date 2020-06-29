@@ -1,0 +1,155 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>管理后台</title>
+    <link href="~/Content/main/css/index.css" rel="stylesheet" />
+    <link href="~/Content/main/css/muban.css" rel="stylesheet" />
+    <script src="~/Content/main/js/jquery.js"></script>
+    <script src="~/Content/main/js/tendina.js"></script>
+    <script src="~/Content/main/js/common.js"></script>
+    <style media="screen">
+      .logo {
+        padding-left: 35px;
+      }
+      .ad_setting_a {
+        color: #fff;
+      }
+    </style>
+</head>
+<body>
+    <!--顶部-->
+    <div class="header">
+        <div class="m">
+            <a href="/" class="logo"><img src="http://www.instwin.com/act/upa/images/ulogo.png" alt="instwin" /></a>
+            <p class="top-tip fr">
+                @*<img src="#" />*@
+            </p>
+        </div>
+    </div>
+
+    <div class="layout_top_header">
+
+        <div style="float: left"><span style="font-size: 16px; line-height: 45px; padding-left: 50px; color: #FFFFFF; ">Instwin管理后台</span></div>
+        <div id="ad_setting" class="ad_setting">
+            <a class="ad_setting_a" href="javascript:;">
+                <i class="icon-user glyph-icon" style="font-size: 20px"></i>
+                <span style="color: #FFFFFF;"></span>
+                <i class="icon-chevron-down glyph-icon"></i>
+            </a>
+            <ul class="dropdown-menu-uu" style="display: none" id="ad_setting_ul">
+                @*<li class="ad_setting_ul_li"> <a href="javascript:;"><i class="icon-user glyph-icon"></i> 个人中心 </a> </li>
+                <li class="ad_setting_ul_li"> <a href="javascript:;"><i class="icon-cog glyph-icon"></i> 设置 </a> </li>*@
+                <li class="ad_setting_ul_li"> <a href="/User/Out"><i class="icon-signout glyph-icon"></i><span class="font-bold">退出</span> </a> </li>
+            </ul>
+        </div>
+    </div>
+    <!--顶部结束-->
+    <!--菜单-->
+    <div class="layout_left_menu">
+        <ul class="tendina" id="menu">
+            <li class="childUlLi">
+                <a href="javascript:void(0);" target="menuFrame"><i class="glyph-icon icon-home"></i>首页</a>
+                @*<ul style="display: none;">
+                    <li><a href="#" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>用户添加</a></li>
+                </ul>*@
+            </li>
+            @*<li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>个人中心</a>
+                <ul style="display: none;">
+                    <li><a href="/account/changepassword" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>修改密码</a></li>
+                </ul>
+            </li>*@
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>管理员管理</a>
+                <ul style="display: none;">
+                    <li><a href="/Admin/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>管理员列表</a></li>
+                    <li><a href="/Admin/Create" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>创建管理员</a></li>
+                </ul>
+            </li>
+       
+            </li>
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>用户管理</a>
+                <ul style="display: none;">
+                    <li><a href="/User/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>用户列表</a></li>
+                    @*<li><a href="/User/Create" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>创建用户</a></li>*@
+                </ul>
+            </li>
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>文章管理</a>
+                <ul style="display: none;">
+                    <li><a href="/new/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>文章列表</a></li>
+                    <li><a href="/category/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>分类管理</a></li>
+                    @*<li><a href="/types/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>类别管理</a></li>*@
+
+                </ul>
+            </li>
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>Banner管理</a>
+                <ul style="display: none;">
+                    <li><a href="/videobanner/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>视频banner</a></li>
+                    <li><a href="/infobanner/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>咨询banner</a></li>
+                    <li><a href="/indexbanner/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>首页banner</a></li>
+
+                </ul>
+            </li>
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>导师课程管理</a>
+                <ul style="display: none;">
+                    <li><a href="/Teacher/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>导师管理</a></li>
+                    <li><a href="/Course/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>课程管理</a></li>
+                    
+                </ul>
+            </li>
+            <li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>活动中心</a>
+                <ul style="display: none;">
+                    <li><a href="/activity/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>微信活动转发</a></li>
+                   
+
+                </ul>
+            </li>
+            @*<li class="childUlLi">
+                <a href="#" target="menuFrame"> <i class="glyph-icon icon-reorder"></i>短信管理</a>
+                <ul style="display: none;">
+                    <li><a href="/Message/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>短信充值记录</a></li>
+                    <li><a href="/Send/index" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>短信发送记录</a></li>
+                </ul>
+            </li>*@
+            @*<li class="childUlLi">
+                    <a href="#"> <i class="glyph-icon  icon-location-arrow"></i>菜单管理</a>
+                    <ul style="display: none;">
+                        <li><a href="#" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>平台菜单</a></li>
+                        <li><a href="#" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>运行商菜单</a></li>
+                        <li><a href="#" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>服务站菜单</a></li>
+                        <li><a href="#" target="menuFrame"><i class="glyph-icon icon-chevron-right"></i>商家菜单</a></li>
+                    </ul>
+                </li>*@
+        </ul>
+    </div>
+    <!--菜单-->
+    <div id="layout_right_content" class="layout_right_content">
+        @*<div class="route_bg">
+                <a href="#">主页</a><i class="glyph-icon icon-chevron-right"></i>
+                <a href="#">公司简介</a>
+            </div>*@
+        <div class="mian_content">
+            <div id="page_content">
+                <iframe id="menuFrame" name="menuFrame" src="/User/index" style="overflow:visible;" scrolling="yes" frameborder="no" height="100%" width="100%"></iframe>
+            </div>
+        </div>
+    </div>
+    <div style="height:300px">
+
+    </div>
+    <div class="layout_footer">
+        <p>
+
+        </p>
+    </div>
+</body>
+</html>

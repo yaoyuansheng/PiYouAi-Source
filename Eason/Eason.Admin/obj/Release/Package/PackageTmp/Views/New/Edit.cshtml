@@ -1,0 +1,327 @@
+﻿@model Eason.EntityFramework.Entities.News.Article
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="~/utf8-net/ueditor.config.js"></script>
+
+    <script src="~/utf8-net/ueditor.all.min.js"></script>
+
+    <script src="~/utf8-net/lang/zh-cn/zh-cn.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">新增新闻</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group" style="margin-top:15px;margin-left:20px; width:300px;">
+                        <label>选择分类</label>
+                        <select class="form-control" id="select-category" name="categoryId">
+                            <option value="0">-无父级分类-</option>
+                        </select>
+                    </div>
+                    <input type="hidden" class="form-control" id="txt_id" value="@Model.id">
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">标题</label>
+                        <div>
+                            <input type="text" class="form-control" id="txt_title" value="@Model.title">
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">副标题</label>
+                        <div>
+                            <input type="text" class="form-control" id="txt_mtitle" value="@Model.mTitle">
+                        </div>
+                    </div>
+
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title" >外链</label>
+                        <div>
+                            <input type="text" class="form-control" id="txt_outlink" value="@Model.outLink">
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">缩略图</label>
+                        <div class="form-inline " style="margin-left:5px;">
+                            <input type="file" id="file1" style="float:left;" />
+                            <input type="button" class="btn btn-default" style="float:left;" id="btn-upload" value="上传" />
+                        </div>
+                        <div>
+                            <input id="txt_imageurl" class="form-control" type="text" value="@Model.imageUrl" />
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">描述</label>
+                        <div>
+                            <textarea rows="3" id="txt_des" style="width:550px;">@Model.desc</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:550px;">
+                        <label for="txt-title">视频地址</label>
+                        <div>
+                            <input type="text" class="form-control" id="txt_videoUrl" value="@Model.videoUrl">
+                        </div>
+                    </div>
+                    @*<div class="form-group" style="margin-top:15px;margin-left:20px; width:550px;">
+                            <label>选择类别</label>
+                            <select class="form-control" id="select-types" name="typesId">
+                                <option value="0">-无父级分类-</option>
+                            </select>
+                        </div>*@
+
+
+
+                    <div class="form-group" style="margin-top:15px;margin-left:20px;">
+                        <label for="editor">内容</label>
+                        <script id="editor" type="text/plain" style="width:1024px;height:500px;">
+                        </script>
+                    </div>
+                    <div class="form-group " style="margin-top:15px;margin-left:20px; width:200px;">
+
+                        <div class="form-inline">
+                            <input type="button" class="btn btn-default" id="btn-publish" value="发 布">
+                            <input type="button" class="btn btn-default" id="btn-save" value="草 稿">
+                        </div>
+                    </div>
+                    <div class="form-group " style="margin-top:50px;margin-left:20px; width:200px;">
+
+
+                    </div>
+                </form>
+            </div>
+            @*<input type="hidden" id="hidden-typeid" value="@Model.typeId" />*@
+            <input type="hidden" id="hidden-categoryid" value="@Model.categoryId" />
+            <input type="hidden" id="hidden-contents" value="@Model.contents" />
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor');
+        ue.addListener("ready", function () {
+            // editor准备好之后才可以使用
+            var cont = $("#hidden-contents").val();
+            ue.setContent(cont);
+
+        });
+        //function GetTypes() {
+
+        //    var typ = $("#hidden-typeid").val();
+
+        //    //        $("#Province").empty();
+        //    $.getJSON(
+        //        "/Types/List?offset=0&limit=1000",
+        //        function (data) {
+        //            $.each(data, function (i, field) {
+        //                $.each(field, function (i, item) {
+        //                    if (item.depth == 0) {
+        //                        var e = '' + item.title;
+        //                    }
+        //                    else if (item.depth == 1) {
+        //                        var e = '&nbsp;&nbsp;|-' + item.title;
+        //                    }
+        //                    else if (item.depth == 2) {
+        //                        var e = '&nbsp;&nbsp;&nbsp;&nbsp;|- ' + item.title;
+        //                    }
+        //                    else if (item.depth == 3) {
+        //                        var e = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|- ' + item.title;
+        //                    }
+        //                    else {
+        //                        var e = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-' + item.title;
+        //                    }
+        //                    if (typ == item.id) {
+        //                        $("<option selected='selected'></option>").val(item.id).html(e).appendTo($("#select-types"));
+        //                    }
+        //                    else {
+        //                        $("<option></option>").val(item.id).html(e).appendTo($("#select-types"));
+        //                    }
+
+        //                });
+        //            });
+        //            //$.each(data, function (i, item) {
+        //            //    alert(this.id);
+        //            //
+        //            //})
+        //        });
+        //    //            GetCity();
+        //}
+        function GetCategory() {
+
+            var cateid = $("#hidden-categoryid").val();
+            //        $("#Province").empty();
+            $.getJSON(
+                "/Category/List?offset=0&limit=1000",
+                function (data) {
+                    $.each(data, function (i, field) {
+                        $.each(field, function (i, item) {
+                            if (item.depth == 0) {
+                                var e = '' + item.title;
+                            }
+                            else if (item.depth == 1) {
+                                var e = '&nbsp;&nbsp;|-' + item.title;
+                            }
+                            else if (item.depth == 2) {
+                                var e = '&nbsp;&nbsp;&nbsp;&nbsp;|- ' + item.title;
+                            }
+                            else if (item.depth == 3) {
+                                var e = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|- ' + item.title;
+                            }
+                            else {
+                                var e = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-' + item.title;
+                            }
+                            if (cateid == item.id) {
+                                $("<option  selected='selected'></option>").val(item.id).html(e).appendTo($("#select-category"));
+                            }
+                            else {
+                                $("<option></option>").val(item.id).html(e).appendTo($("#select-category"));
+                            }
+
+                        });
+                    });
+                    //$.each(data, function (i, item) {
+                    //    alert(this.id);
+                    //
+                    //})
+                });
+            //            GetCity();
+        }
+       // GetTypes();
+        GetCategory();
+        var $publish = $('#btn-publish');
+        var $save = $('#btn-save');
+
+
+        $publish.click(function () {
+            var $title = $('#txt_title').val(),
+                $id = $('#txt_id').val(),
+                $contents = UE.getEditor('editor').getContent(),
+                $categoryId = $('#select-category').val(),
+                $outlink = $('#txt_outlink').val(),
+                $channelId = $('#txt_channelId').val(),
+                // $typeId = $('#select-types').val(),
+                $mtitle = $('#txt_mtitle').val(),
+                $imageurl = $('#txt_imageurl').val(),
+                $desc = $('#txt_des').val(),
+                $videoUrl = $('#txt_videoUrl').val();
+            if ($title == null || $title == "") {
+                alert("标题不允许为空哦");
+                return;
+            }
+            if ($categoryId == null || $categoryId == "" || $categoryId == 0) {
+                alert("请选择分类哦");
+                return;
+            }
+
+            if (confirm('确定要发布了嘛？')) {
+                $.post("/New/Edit",
+                    {
+                        id: $id,
+                        title: $title,
+                        contents: $contents,
+                        categoryId: $categoryId,
+                        channelId: $channelId,
+                        //typeId: $typeId,
+                        status: 0,
+                        mtitle: $mtitle,
+                        imageurl: $imageurl,
+                        desc: $desc,
+                        videoUrl: $videoUrl,
+                        outLink: $outlink
+                    },
+                    function (data, status) {
+                        window.location.href = "/new/index";
+
+                    });
+            }
+        });
+
+        $save.click(function () {
+            var $title = $('#txt_title').val(),
+                $id = $('#txt_id').val(),
+                $contents = UE.getEditor('editor').getContent(),
+                $outlink = $('#txt_outlink').val(),
+                $categoryId = $('#select-category').val(),
+                $channelId = $('#txt_channelId').val(),
+                // $typeId = $('#select-types').val(),
+                $mtitle = $('#txt_mtitle').val(),
+                $imageurl = $('#txt_imageurl').val(),
+                $desc = $('#txt_des').val(),
+                $videoUrl = $('#txt_videoUrl').val();
+            if ($title == null || $title == "") {
+                alert("标题不允许为空哦");
+                return;
+            }
+            if ($categoryId == null || $categoryId == "" || $categoryId == 0) {
+                alert("请选择分类哦");
+                return;
+            }
+            $.post("/New/Edit",
+                {
+                    id: $id,
+                    title: $title,
+                    contents: $contents,
+                    categoryId: $categoryId,
+                    channelId: $channelId,
+                    // typeId: $typeId,
+                    status: 1,
+                    mtitle: $mtitle,
+                    imageurl: $imageurl,
+                    desc: $desc,
+                    videoUrl: $videoUrl,
+                    outLink: $outlink
+                },
+                function (data, status) {
+                    window.location.href = "/new/index";
+
+                });
+
+        });
+
+
+        $("#btn-upload").click(function () {
+
+            var formData = new FormData();
+            formData.append("upfile", document.getElementById("file1").files[0]);
+            $.ajax({
+                url: "http://www.piyouai.com:8081/baidueditor.ashx?action=uploadimage",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var jsonData = JSON.parse(data);
+                    if (jsonData.state == "SUCCESS") {
+
+                        $("#txt_imageurl").val("http://www.piyouai.com:8081/new/" + jsonData.url);
+                    }
+                    else {
+                        alert("上传失败！");
+                    }
+
+                },
+                error: function () {
+                    alert("上传失败！");
+
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
